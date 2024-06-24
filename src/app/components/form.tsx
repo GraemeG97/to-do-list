@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Trash2 } from "lucide-react";
 
-// Define the Todo interface
 interface Todo {
   id: number;
   task: string;
@@ -12,8 +11,9 @@ export default function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTask, setNewTask] = useState<string>("");
 
+  //add new task
   const addTodo = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     if (newTask.trim() === "") return;
     const newTodo: Todo = {
       id: todos.length + 1,
@@ -24,6 +24,7 @@ export default function TodoList() {
     setNewTask("");
   };
 
+  //function to change when task is clicked on
   const checkedTodoStatus = (id: number) => {
     setTodos(
       todos.map((todo) =>
@@ -32,28 +33,26 @@ export default function TodoList() {
     );
   };
 
+  //function to delete a task from the list
   const deleteTodo = (id: number) => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
+  //load tasks from localstorage
   useEffect(() => {
     const storedTodos = localStorage.getItem("todos");
     if (storedTodos) {
       setTodos(JSON.parse(storedTodos));
     }
   }, []);
-  useEffect(() => {
-    if (todos.length > 0) {
-      localStorage.setItem("todos", JSON.stringify(todos));
-    }
-  }, [todos]);
 
+  //update the tasks
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
   return (
-    <div className="max-w mx-auto p-4">
+    <div className="max-w-4xl mx-auto p-4">
       <form onSubmit={addTodo} className="space-y-4">
         <div>
           <label
@@ -65,7 +64,7 @@ export default function TodoList() {
             id="task_input"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 block w-full md:w-96 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="Enter your task"
           />
         </div>
@@ -85,7 +84,9 @@ export default function TodoList() {
               key={todo.id}
               className="bg-white p-4 rounded-md shadow-md flex items-center justify-between"
             >
-              <div className="flex items-center">
+              <div className="flex items-center w-full">
+                {" "}
+                {/* Ensuring tasks take full width */}
                 <input
                   type="checkbox"
                   checked={todo.status}

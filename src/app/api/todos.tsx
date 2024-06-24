@@ -3,6 +3,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+//set up the requests and responses for api like GET, POSt etc
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -31,7 +33,7 @@ export default async function handler(
       console.log("New todo created:", newTodo);
       res.status(201).json(newTodo);
     } else {
-      res.status(405).json({ error: "Method not allowed" });
+      res.status(405).json({ error: "Not allowed" });
     }
   } catch (error) {
     console.error("Internal server error:", error);

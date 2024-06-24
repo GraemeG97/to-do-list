@@ -7,33 +7,34 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    try {
+  console.log("Request method:", req.method);
+  try {
+    if (req.method === "GET") {
       const todos = await prisma.todo.findMany();
+      console.log("Todos fetched:", todos);
       res.status(200).json(todos);
-    } catch (error) {
-      res.status(500).json({ error: "Could not fetch todos" });
-    }
-  } else if (req.method === "POST") {
-    const { task, status } = req.body;
+    } else if (req.method === "POST") {
+      const { task, status } = req.body;
+      console.log("Received task:", task, "status:", status);
 
-    if (!task || !status) {
-      res.status(400).json({ error: "Task and status are required" });
-      return;
-    }
+      if (!task || !status) {
+        res.status(400).json({ error: "Task and status are required" });
+        return;
+      }
 
-    try {
       const newTodo = await prisma.todo.create({
         data: {
           task,
           status,
         },
       });
+      console.log("New todo created:", newTodo);
       res.status(201).json(newTodo);
-    } catch (error) {
-      res.status(500).json({ error: "Could not add todo task" });
+    } else {
+      res.status(405).json({ error: "Method not allowed" });
     }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
+  } catch (error) {
+    console.error("Internal server error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }

@@ -14,7 +14,9 @@ export default function Home() {
     <>
       <div className="flex flex-col items-center mt-8">
         <div className="flex items-center space-x-3">
-          <h1 className="text-3xl font-bold">Welcome to Graeme's To-Do-List</h1>
+          <h1 className="text-3xl font-bold">
+            Welcome to Graeme&#39;s To-Do-List
+          </h1>
           <ListTodo className="w-8 h-8 text-gray-700" />
         </div>
         <TodoList />
